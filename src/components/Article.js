@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+import CommentsList from './CommentsList';
 
 class Article extends Component {
 
@@ -11,7 +12,7 @@ class Article extends Component {
         const { isOpen } = this.state
 
         if (!article) return <h3>No article</h3>
-        const body = isOpen ? <section>{article.text}</section> : null
+        const body = isOpen ? <section>{article.text}<CommentsList comments={ article.comments } /></section> : null
 
         return (
             <div>

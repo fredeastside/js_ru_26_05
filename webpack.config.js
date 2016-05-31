@@ -22,5 +22,9 @@ module.exports = {
                 loader: 'style-loader!css-loader'
             }
         ]
+    },
+    devServer: {
+        host: 'localhost',
+        port: 3001
     }
 }
