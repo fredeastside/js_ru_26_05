@@ -6,7 +6,7 @@ class CommentsList extends Component {
   constructor(props) {
     super(props);
     this.state = { isOpen: false };
-
+    //решение зорошее, а вот этого можно избежать определив onClickHandler как onClickHandler = (ev) => {}
     this.onClickHandler = this.onClickHandler.bind(this);
   }
 
