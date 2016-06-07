@@ -1,30 +1,28 @@
-import React, { createClass } from 'react'
+import React, { PropTypes, createClass } from 'react'
 import Article from './Article'
-import toggleOpenList from '../mixins/toggleOpenList'
+import oneOpen from '../mixins/oneOpen'
 
 const ArticleListOld = createClass({
-  mixins: [toggleOpenList],
-  propTypes: {
-      articles: React.PropTypes.array.isRequired
-  },
+    propTypes: {
+        articles: PropTypes.array.isRequired
+    },
+    mixins: [oneOpen],
+    render() {
+        const { articles } = this.props
+        const articleItems = articles.map((article) => <li key={article.id}>
+            <Article article = {article}
+                isOpen = {this.isOpen(article.id)}
+                toggleOpen = {this.openItem(article.id)}
+            />
+        </li>)
+        return (
+            <div>
+                <ul>
+                    {articleItems}
+                </ul>
+            </div>
+        )
+    }
+})
 
-  render() {
-      const { articles } = this.props
-
-      const articleItems = articles.map((article) => <li key={article.id}>
-          <Article article = {article}
-                   isOpen = {article.id === this.state.openedId}
-              openArticle = {this.toggleOpen(article.id)}
-          />
-      </li>)
-
-      return (
-          <ul>
-              {articleItems}
-          </ul>
-      )
-  }
-
-});
-
-export default ArticleListOld;
+export default ArticleListOld
