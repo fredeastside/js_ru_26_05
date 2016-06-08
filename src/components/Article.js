@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import CommentList from './CommentList'
+import moment from 'moment';
 
 class Article extends Component {
 
@@ -17,7 +18,7 @@ class Article extends Component {
 
         return (
             <div>
-                <h3 onClick = {openArticle}>{article.title}</h3>
+                <h3 onClick = {openArticle}>{article.title} ({ moment.unix(article.created_at).format("DD.MM.YYYY") })</h3>
                 {this.getBody()}
             </div>
         )
