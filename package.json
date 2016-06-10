@@ -37,6 +37,7 @@
     "react-addons-css-transition-group": "^15.1.0",
     "react-day-picker": "^2.1.1",
     "react-dom": "^15.0.2",
-    "react-select": "^1.0.0-beta13"
+    "react-select": "^1.0.0-beta13",
+    "shortid": "^2.2.6"
   }
 }

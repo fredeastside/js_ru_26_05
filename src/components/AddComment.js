@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { addComment } from '../AC/comments'
+import { addComment } from '../AC/comments';
+import shortid from 'shortid';
 
 class AddComment extends Component {
 
@@ -25,7 +26,11 @@ class AddComment extends Component {
       return;
     }
 
-    addComment(this.props.articleId, name, text);
+    addComment(this.props.articleId, {
+      shortid.generate(),
+      name,
+      text
+    });
     this.setState({ name: '', text: '' })
   }
 
