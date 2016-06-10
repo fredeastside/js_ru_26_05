@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
+import AddComment from './AddComment'
 import toggleOpen from '../decorators/toggleOpen'
 
 class CommentList extends Component {
@@ -18,6 +19,7 @@ class CommentList extends Component {
             <div>
                 {this.getToggler()}
                 {this.getList()}
+                <AddComment articleId={ this.props.articleId } />
             </div>
         )
     }

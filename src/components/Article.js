@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import CommentList from './CommentList'
-import moment from 'moment';
+import { deleteArticle } from '../AC/articles'
 
 class Article extends Component {
 
@@ -18,7 +18,8 @@ class Article extends Component {
 
         return (
             <div>
-                <h3 onClick = {openArticle}>{article.title} ({ moment.unix(article.created_at).format("DD.MM.YYYY") })</h3>
+                <h3 onClick = {openArticle}>{article.title} <a href="#" onClick = {this.handleDeleteArticle}>delete article</a></h3>
+                <h6>Added {new Date(article.date).toDateString()}</h6>
                 {this.getBody()}
             </div>
         )
@@ -27,12 +28,19 @@ class Article extends Component {
     getBody() {
         const { article, isOpen } = this.props
         if (!isOpen) return null
+
         return (
             <section>
                 {article.text}
-                <CommentList comments = {article.comments} />
+                <CommentList comments = {article.getRelation('comments')} articleId={ article.id } />
             </section>
         )
+    }
+
+    handleDeleteArticle = (ev) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+        deleteArticle(this.props.article.id)
     }
 }
 

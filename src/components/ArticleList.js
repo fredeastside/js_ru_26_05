@@ -4,16 +4,16 @@ import Article from './Article'
 import Chart from './Chart'
 import oneOpen from '../decorators/oneOpen'
 import Select from 'react-select'
-import DayPicker, { DateUtils } from "react-day-picker";
-import moment from 'moment';
+import DayPicker, { DateUtils } from 'react-day-picker'
 
+import 'react-day-picker/lib/style.css'
 import 'react-select/dist/react-select.css'
 import 'react-day-picker/lib/style.css';
 
 class ArticleList extends Component {
 
     state = {
-        selected: null,
+        selected: [],
         from: null,
         to: null
     }
@@ -24,89 +24,58 @@ class ArticleList extends Component {
     }
 
     render() {
-        const { from, to, selected } = this.state;
+        const { articles, isOpen, openItem } = this.props
+        const { from, to } = this.state
 
-        const options = this.props.articles.map((article) => ({
+        const articleItems = this.getFilteredArticles().map((article) => <li key={article.id}>
+            <Article article = {article}
+                     isOpen = {isOpen(article.id)}
+                openArticle = {openItem(article.id)}
+            />
+        </li>)
+
+        const options = articles.map((article) => ({
             label: article.title,
             value: article.id
         }))
 
         return (
-            <div>
-                <div>
-                  <DayPicker
-                    selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
-                    onDayClick={ this.handleDayClick }
-                  />
-                  <a href="#" onClick={ this.handleResetClick }>Сбросить фильтр</a>
-                </div>
-                { this.renderArticles() }
-                <Chart ref="chart" />
-                <Select
-                    options = {options}
-                    onChange = {this.handleChange}
-                    value= { selected }
-                    multi = {true}
-                />
-            </div>
+          <div>
+              <ul>
+                  {articleItems}
+              </ul>
+              <Chart ref="chart" />
+              <DayPicker
+                  ref="daypicker"
+                  selectedDays={day => DateUtils.isDayInRange(day, {from, to})}
+                  onDayClick={this.setDateRange.bind(this)}
+              />
+              <Select
+                  options = {options}
+                  onChange = {this.handleChange}
+                  value= {this.state.selected}
+                  multi = {true}
+              />
+          </div>
         )
     }
 
-    renderArticles() {
-        const { articles, isOpen, openItem } = this.props;
-        const { from } = this.state;
-        let notFound = true;
-
-        const articleItems = articles.map((article) => {
-
-          if (!this.isFilteredByDate(article.created_at)) {
-            return null;
-          }
-
-          notFound = false;
-
-          return (
-            <li key={article.id}>
-                <Article article = {article}
-                         isOpen = {isOpen(article.id)}
-                    openArticle = {openItem(article.id)}
-                />
-            </li>
-          )
-        });
-
-        return (
-          <ul>
-              { from && notFound ? <li><strong>On your terms nothing has been found.</strong></li> : articleItems }
-          </ul>
-        );
+    getFilteredArticles() {
+        const { articles } = this.props
+        const { from, to, selected } = this.state
+        return articles
+            .filter((article) => !selected.length || selected.includes(article.id))
+            .filter((article) => !(from || to) || DateUtils.isDayInRange(new Date(article.date), { from, to }))
     }
 
-    isFilteredByDate = (timestamp) => {
-      const { from, to } = this.state;
-
-      timestamp = moment.unix(timestamp);
-
-      if (!from) {
-          return true;
-      }
-
-      if (to) {
-        if (timestamp >= moment(from).startOf('day') && timestamp <= moment(to).endOf('day')) {
-          return true;
-        }
-      }
-
-      if (timestamp >= moment(from).startOf('day') && timestamp <= moment(from).endOf('day')) {
-        return true;
-      }
-
-      return false;
+    setDateRange = (e, day) => {
+        const range = DateUtils.addDayToRange(day, this.state)
+        this.setState(range)
     }
 
     handleChange = (selected) => {
         this.setState({
-            selected
+            selected: selected.map(el => el.value)
         })
     }
 
