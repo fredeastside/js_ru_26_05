@@ -12,7 +12,7 @@ export default class ArticleStore extends BasicStore {
                     this._delete(payload.id)
                     break
                 case ADD_COMMENT:
-                    this._addComment(payload.articleId);
+                    this._addComment(payload);
                     break;
 
                 default:
@@ -23,10 +23,9 @@ export default class ArticleStore extends BasicStore {
         })
     }
 
-    _addComment = (articleId) => {
-      let article = this.getById(articleId),
-          commentId = this.getStoreByName('comments').getAll().length;
+    _addComment = ({ articleId, id }) => {
+      let article = this.getById(articleId);
 
-      article.comments.push(commentId);
+      article.comments.push(id);
     }
 }

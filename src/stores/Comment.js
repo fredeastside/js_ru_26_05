@@ -1,31 +1,27 @@
-import BasicStore from './BasicStore'
-import { ADD_COMMENT } from '../constants'
+import BasicStore from './BasicStore';
+import { ADD_COMMENT } from '../constants';
 
 export default class CommentStore extends BasicStore {
     constructor(...args) {
-        super(...args)
+        super(...args);
         this._subscribe((action) => {
-            const { type, payload } = action
+            const { type, payload } = action;
 
             switch (type) {
                 case ADD_COMMENT:
-                    const { name, text } = payload;
+                    const { id, name, text } = payload;
                     this._add({
-                      id: this.getIdForNewComment(),
+                      id: id,
                       name: name,
                       text: text
                     });
-                    break
+                    break;
 
                 default:
-                    return
+                    return;
             }
 
-            this._emitChange()
+            this._emitChange();
         });
-    }
-
-    getIdForNewComment() {
-      return this.getAll().length;
     }
 }

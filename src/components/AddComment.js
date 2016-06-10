@@ -26,11 +26,13 @@ class AddComment extends Component {
       return;
     }
 
-    addComment(this.props.articleId, {
-      shortid.generate(),
-      name,
-      text
+    addComment({
+      id: shortid.generate(),
+      name: name,
+      text: text,
+      articleId: this.props.articleId
     });
+
     this.setState({ name: '', text: '' })
   }
 
