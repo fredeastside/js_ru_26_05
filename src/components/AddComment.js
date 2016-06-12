@@ -27,6 +27,7 @@ class AddComment extends Component {
     }
 
     addComment({
+      //логичнее вынести генерацию id в AC
       id: shortid.generate(),
       name: name,
       text: text,
