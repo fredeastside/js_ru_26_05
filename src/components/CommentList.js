@@ -3,6 +3,7 @@ import Comment from './Comment'
 import AddComment from './AddComment'
 import toggleOpen from '../decorators/toggleOpen'
 
+//хорошо, но я бы уже передавал просто article, а не отдельно articleId и comments
 class CommentList extends Component {
     static defaultProps = {
 
