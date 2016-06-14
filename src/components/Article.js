@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import CommentList from './CommentList'
-import { deleteArticle } from '../AC/articles'
+import { deleteArticle, loadArticleById } from '../AC/articles'
 
 class Article extends Component {
 
@@ -12,6 +12,11 @@ class Article extends Component {
     }
 
 */
+
+    componentWillReceiveProps({ isOpen, article : { id, text, loading } }) {
+        if (isOpen && !text && !loading) loadArticleById({ id })
+    }
+
     render() {
         const { article, openArticle } = this.props
         if (!article) return <h3>No article</h3>
@@ -28,11 +33,13 @@ class Article extends Component {
     getBody() {
         const { article, isOpen } = this.props
         if (!isOpen) return null
+        const loader = article.loading ? <h3>Loading...</h3> : null
 
         return (
             <section>
+                {loader}
                 {article.text}
-                <CommentList comments = {article.getRelation('comments')} articleId={ article.id } />
+                <CommentList article = { article} />
             </section>
         )
     }

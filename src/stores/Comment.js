@@ -9,12 +9,7 @@ export default class CommentStore extends BasicStore {
 
             switch (type) {
                 case ADD_COMMENT:
-                    const { name, text } = payload;
-                    this._add({
-                      id: this.getIdForNewComment(),
-                      name: name,
-                      text: text
-                    });
+                    this._add(payload.comment)
                     break
 
                 default:
@@ -22,10 +17,6 @@ export default class CommentStore extends BasicStore {
             }
 
             this._emitChange()
-        });
-    }
-
-    getIdForNewComment() {
-      return this.getAll().length;
+        })
     }
 }

@@ -1,13 +1,13 @@
-import AppDispatcher from '../dispatcher';
-import { ADD_COMMENT } from '../constants';
+import { ADD_COMMENT } from '../constants'
+import AppDispatcher from '../dispatcher'
 
-export function addComment(articleId, name, text) {
-  const action = {
-      type: ADD_COMMENT,
-      payload: {
-        articleId, name, text
-      }
-  }
-
-  AppDispatcher.dispatch(action)
-};
+export function addComment(articleId, comment) {
+    const id = Date.now()
+    AppDispatcher.dispatch({
+        type: ADD_COMMENT,
+        payload: {
+            articleId,
+            comment: {...comment, id}
+        }
+    })
+}

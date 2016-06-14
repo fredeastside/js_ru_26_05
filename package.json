@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run dev",
+    "start": "concurrently \"npm run dev\" \"npm run api\"",
     "api": "node simple_api/server.js",
     "dev": "webpack-dev-server --hot --inline"
   },
@@ -25,6 +25,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.5.0",
+    "concurrently": "^2.1.0",
     "css-loader": "^0.23.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.14",
@@ -33,6 +34,7 @@
   "dependencies": {
     "events": "^1.1.0",
     "flux": "^2.1.1",
+    "jquery": "^3.0.0",
     "react": "^15.0.2",
     "react-addons-css-transition-group": "^15.1.0",
     "react-day-picker": "^2.1.1",
