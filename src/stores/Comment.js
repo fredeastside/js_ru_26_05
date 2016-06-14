@@ -1,11 +1,11 @@
-import BasicStore from './BasicStore'
-import { ADD_COMMENT } from '../constants'
+import BasicStore from './BasicStore';
+import { ADD_COMMENT } from '../constants';
 
 export default class CommentStore extends BasicStore {
     constructor(...args) {
-        super(...args)
+        super(...args);
         this._subscribe((action) => {
-            const { type, payload } = action
+            const { type, payload } = action;
 
             switch (type) {
                 case ADD_COMMENT:
@@ -13,7 +13,7 @@ export default class CommentStore extends BasicStore {
                     break
 
                 default:
-                    return
+                    return;
             }
 
             this._emitChange()

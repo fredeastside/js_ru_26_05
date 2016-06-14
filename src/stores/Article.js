@@ -47,11 +47,4 @@ export default class ArticleStore extends BasicStore {
             this._emitChange()
         })
     }
-
-    _addComment = (articleId) => {
-      let article = this.getById(articleId),
-          commentId = this.getStoreByName('comments').getAll().length;
-
-      article.comments.push(commentId);
-    }
 }
