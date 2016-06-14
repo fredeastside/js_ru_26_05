@@ -1,9 +1,17 @@
 import BasicStore from './BasicStore'
-import { DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, LOAD_ARTICLE_BY_ID, START, SUCCESS, FAIL} from '../constants'
+import { DELETE_ARTICLE, FILTER_ARTICLES, ADD_COMMENT, LOAD_ALL_ARTICLES, LOAD_ARTICLE_BY_ID, START, SUCCESS, FAIL} from '../constants'
 
 export default class ArticleStore extends BasicStore {
     constructor(...args) {
         super(...args)
+
+        // можно ли так делать???
+        this.filter = {
+            selected: [],
+            from: null,
+            to: null
+        };
+
         this._subscribe((action) => {
             const { type, payload, response, error } = action
 
@@ -11,6 +19,10 @@ export default class ArticleStore extends BasicStore {
                 case DELETE_ARTICLE:
                     this._delete(payload.id)
                     break
+
+                case FILTER_ARTICLES:
+                    this.filter = Object.assign(this.filter, payload);
+                    break;
 
                 case ADD_COMMENT:
                     this._waitFor(['comments'])

@@ -4,6 +4,7 @@ import Article from './Article'
 import Chart from './Chart'
 import oneOpen from '../decorators/oneOpen'
 import Select from 'react-select'
+import { filterArticles } from '../AC/articles';
 import DayPicker, { DateUtils } from 'react-day-picker'
 
 import 'react-day-picker/lib/style.css'
@@ -12,12 +13,6 @@ import 'react-day-picker/lib/style.css';
 
 class ArticleList extends Component {
 
-    state = {
-        selected: [],
-        from: null,
-        to: null
-    }
-
     componentDidMount() {
         console.log('---', 2)
         console.log('---', findDOMNode(this.refs.chart))
@@ -25,7 +20,7 @@ class ArticleList extends Component {
 
     render() {
         const { articles, isOpen, openItem } = this.props
-        const { from, to } = this.state
+        const { from, to, selected } = this.props.filter
 
         const articleItems = this.getFilteredArticles().map((article) => <li key={article.id}>
             <Article article = {article}
@@ -53,7 +48,7 @@ class ArticleList extends Component {
               <Select
                   options = {options}
                   onChange = {this.handleChange}
-                  value= {this.state.selected}
+                  value= { selected }
                   multi = {true}
               />
           </div>
@@ -62,41 +57,40 @@ class ArticleList extends Component {
 
     getFilteredArticles() {
         const { articles } = this.props
-        const { from, to, selected } = this.state
+        const { from, to, selected } = this.props.filter
+
         return articles
             .filter((article) => !selected.length || selected.includes(article.id))
             .filter((article) => !(from || to) || DateUtils.isDayInRange(new Date(article.date), { from, to }))
     }
 
     setDateRange = (e, day) => {
-        const range = DateUtils.addDayToRange(day, this.state)
-        this.setState(range)
+        const range = DateUtils.addDayToRange(day, this.props.filter)
+        filterArticles(range);
     }
 
     handleChange = (selected) => {
-        this.setState({
-            selected: selected.map(el => el.value)
-        })
+        filterArticles({
+          selected: selected.map(el => el.value)
+        });
     }
 
     handleDayClick = (e, day) => {
-      let { from, to } = DateUtils.addDayToRange(day, this.state);
-      this.setState({ from, to });
+      let { from, to } = DateUtils.addDayToRange(day, this.props.filter);
+      filterArticles({ from, to });
     }
 
     handleResetClick = (e) => {
       e.preventDefault();
-      this.setState({
-        from: null,
-        to: null,
-      });
+      filterArticles({ from: null, to: null });
     }
 }
 
 ArticleList.propTypes = {
     articles: PropTypes.array.isRequired,
     isOpen: PropTypes.func.isRequired,
-    openItem: PropTypes.func.isRequired
+    openItem: PropTypes.func.isRequired,
+    filter: PropTypes.shape({selected: PropTypes.array, from: PropTypes.any, to: PropTypes.any})
 }
 
 export default oneOpen(ArticleList)

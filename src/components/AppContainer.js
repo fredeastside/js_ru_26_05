@@ -10,18 +10,20 @@ class AppContainer extends Component {
     }
 
     render() {
-        const { loading, articles } = this.props
+        const { loading, articles, filter } = this.props
         if (loading) return <h1>Loading...</h1>
-        return <ArticleList articles = {articles} />
+        return <ArticleList articles = {articles} filter={ filter } />
     }
 }
 
 
 function getState(stores) {
     const { articles } = stores
+
     return {
         articles: articles.getAll(),
-        loading: articles.loading
+        loading: articles.loading,
+        filter: articles.filter
     }
 }
 
