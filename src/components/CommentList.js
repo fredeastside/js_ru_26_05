@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
 import NewCommentForm from './NewCommentForm'
+import { loadCommentsByArticleId } from '../AC/comments'
 
 //хорошо, но я бы уже передавал просто article, а не отдельно articleId и comments
 class CommentList extends Component {
@@ -15,6 +16,7 @@ class CommentList extends Component {
         isOpen: PropTypes.bool,
         toggleOpen: PropTypes.func
     };
+
     render() {
         return (
             <div>
@@ -24,12 +26,16 @@ class CommentList extends Component {
         )
     }
 
-    componentDidMount() {
-        console.log('I am mounted')
-    }
+
 
     componentWillUpdate(nextProps) {
-        console.log(this.props.isOpen, ' changes to ', nextProps.isOpen)
+        //console.log(this.props.isOpen, ' changes to ', nextProps.isOpen)
+        const { article } = this.props;
+        if (!this.props.isOpen && nextProps.isOpen
+            && !article.commentsLoading
+            && !article.commentsLoaded) {
+            loadCommentsByArticleId(article)
+        }
     }
 
 
@@ -41,8 +47,9 @@ class CommentList extends Component {
 
     getList() {
         const { article, isOpen } = this.props
+        const { comments, commentsLoading } = article
         if (!isOpen) return null
-        const comments = article.getRelation('comments')
+        if (commentsLoading) return <h3>Loading...</h3>
         if (!comments || !comments.length) return <h3>No comments yet</h3>
         const items = comments.map(comment => <li key = {comment.id}><Comment comment = {comment} /></li>)
         return <div>

@@ -19,7 +19,6 @@ class AppContainer extends Component {
 
 function getState(stores) {
     const { articles } = stores
-
     return {
         articles: articles.getAll(),
         loading: articles.loading,

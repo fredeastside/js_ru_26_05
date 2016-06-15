@@ -5,7 +5,7 @@ export default class CommentStore extends BasicStore {
     constructor(...args) {
         super(...args);
         this._subscribe((action) => {
-            const { type, payload } = action;
+            const { type, payload, response, error } = action;
 
             switch (type) {
                 case ADD_COMMENT:

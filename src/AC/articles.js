@@ -1,4 +1,4 @@
-  import AppDispatcher from '../dispatcher'
+import AppDispatcher from '../dispatcher'
 import { loadAllArticlesCall, loadArticleByIdCall, asyncACFactory } from './webUtils'
 import { DELETE_ARTICLE, FILTER_ARTICLES, LOAD_ARTICLE_BY_ID, LOAD_ALL_ARTICLES } from '../constants'
 
