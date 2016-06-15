@@ -63,6 +63,9 @@ export default class ArticleStore extends BasicStore {
                 case LOAD_COMMENTS_BY_ARTICLE_ID + SUCCESS:
                     article = this.getById(payload.id);
                     article.comments = response
+                    //commentsLoaded и commentsLoading - нормально, а вот article.comments = response - плохо,
+                    //мы договаривались держать комменты в отдельном сторе, а article.comments должно быть масивом id
+                    
                     // это сделано чтобы понимать надо ли дергать api тк изначально comments не пустой
                     // и проверить на его длину не получится
                     // кривенько правда :(
