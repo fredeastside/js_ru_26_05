@@ -27,7 +27,8 @@ class CommentList extends Component {
     }
 
 
-
+    //мы говорили, что componentWillUpdate плохое место для обновления состояния - таким образом вы сделаете setState дважды, а можете и вообще в цикл загнать
+    //следует перенести в componentWillReceiveProps
     componentWillUpdate(nextProps) {
         //console.log(this.props.isOpen, ' changes to ', nextProps.isOpen)
         const { article } = this.props;
