@@ -17,6 +17,7 @@ class CommentList extends Component {
         isOpen: PropTypes.bool,
         toggleOpen: PropTypes.func
     };
+
     render() {
         return (
             <div>
@@ -25,22 +26,6 @@ class CommentList extends Component {
             </div>
         )
     }
-
-/*
-    componentDidMount() {
-        console.log('I am mounted')
-    }
-
-    componentWillReceiveProps({ isOpen, article }) {
-        if (isOpen && getRelation(article, 'comments').includes(undefined) && !article.loadingComments) loadCommentsForArticle(article)
-    }
-
-    componentWillUpdate(nextProps) {
-        console.log(this.props.isOpen, ' changes to ', nextProps.isOpen)
-    }
-
-
-*/
 
     getToggler() {
         const { isOpen, toggleOpen } = this.props
