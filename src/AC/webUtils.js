@@ -32,3 +32,7 @@ export function loadAllArticlesCall() {
 export function loadArticleByIdCall({ id }) {
     return $.get(`/api/article/${id}`)
 }
+
+export function loadCommentsForArticleCall({ id }) {
+    return $.get(`/api/comment?article=${id}`)
+}
