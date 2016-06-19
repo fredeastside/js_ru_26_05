@@ -7,9 +7,11 @@ export default (articles = normalizedArticles, action) => {
     switch (type) {
         case DELETE_ARTICLE: return articles.filter((article) => article.id != payload.id)
         case ADD_COMMENT:
+            //это лишнее, .map и так вернет новый массив
           articles = [...articles];
           articles.map((article) => {
             if (article.id === payload.articleId) {
+                //а это плохо, вы мутируете article
               article.comments.push(payload.id);
             }
           });
