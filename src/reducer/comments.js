@@ -20,6 +20,7 @@ export default (state = defaultState, action) => {
             return state
                 .set('loading',false)
                 .set('loaded', true)
+                //вы так будете каждый раз перезаписывать комменты. Лучше мерджить fromJS(fromArray(comments)) в entities
                 .set('entities', fromJS(fromArray(comments)) )
         case ADD_COMMENT:
           comments = toArray(state.get('entities').toJS());
