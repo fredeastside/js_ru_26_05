@@ -1,20 +1,34 @@
-import { ADD_COMMENT } from '../constants'
-import { normalizedComments } from '../fixtures'
-import { fromArray } from '../store/utils'
-import { fromJS } from 'immutable'
+import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE, START, SUCCESS } from '../constants'
+import { toArray, fromArray } from '../store/utils'
+import { fromJS, toMap } from 'immutable'
 
 const defaultState = fromJS({
     loading: false,
     isLoaded: false,
-    entities: fromArray(normalizedComments)
+    entities: {}//fromArray(normalizedComments)
 })
 
-export default (comments = defaultState, action) => {
+export default (state = defaultState, action) => {
     const { type, payload, randomId, response, error } = action
-
+    let comments
     switch (type) {
-//        case ADD_COMMENT: return comments.concat({...payload.comment, id: randomId})
+        case LOAD_COMMENTS_FOR_ARTICLE + START:
+            return state.set('loading', true)
+        case LOAD_COMMENTS_FOR_ARTICLE + SUCCESS:
+            comments = toArray(state.get('entities').toJS());
+            comments = comments.concat(response);
+            return state
+                .set('loading',false)
+                .set('loaded', true)
+                .set('entities', fromJS(fromArray(comments)) )
+        case ADD_COMMENT:
+          comments = toArray(state.get('entities').toJS());
+          comments.push({...payload.comment, id: randomId});
+          return state.set(
+            'entities',
+            fromJS(fromArray(comments))
+          );
     }
 
-    return comments
+    return state
 }

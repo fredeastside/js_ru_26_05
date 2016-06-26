@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
 import NewCommentForm from '../containers/NewCommentForm'
-//import { loadCommentsForArticle } from '../AC/comments'
+import { loadCommentsForArticle } from '../AC/comments'
 import { getRelation } from '../store/utils'
+import { connect } from 'react-redux';
 
 //хорошо, но я бы уже передавал просто article, а не отдельно articleId и comments
 class CommentList extends Component {
@@ -17,6 +18,12 @@ class CommentList extends Component {
         isOpen: PropTypes.bool,
         toggleOpen: PropTypes.func
     };
+
+    componentWillReceiveProps({ isOpen, article }) {
+        if (isOpen && !article.loadingComments && getRelation(article, 'comments').includes(undefined)) {
+          this.props.loadCommentsForArticle(article)
+        }
+    }
 
     render() {
         return (
@@ -47,4 +54,5 @@ class CommentList extends Component {
     }
 }
 
-export default toggleOpen(CommentList)
+export default connect(null, { loadCommentsForArticle })(toggleOpen(CommentList));
+//export default toggleOpen(CommentList)

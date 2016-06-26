@@ -41,7 +41,7 @@ class Article extends Component {
             <section>
                 {loader}
                 {article.text}
-                <CommentList article = { article} />
+                <CommentList article = { article } />
             </section>
         )
     }
