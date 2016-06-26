@@ -34,6 +34,7 @@
   "dependencies": {
     "events": "^1.1.0",
     "flux": "^2.1.1",
+    "immutable": "^3.8.1",
     "jquery": "^3.0.0",
     "react": "^15.0.2",
     "react-addons-css-transition-group": "^15.1.0",
@@ -41,6 +42,7 @@
     "react-dom": "^15.0.2",
     "react-redux": "^4.4.5",
     "react-select": "^1.0.0-beta13",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0"
   }
 }

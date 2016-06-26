@@ -1,11 +1,20 @@
+import { ADD_COMMENT } from '../constants'
 import { normalizedComments } from '../fixtures'
-import { ADD_COMMENT } from '../constants';
+import { fromArray } from '../store/utils'
+import { fromJS } from 'immutable'
 
-export default (comments = normalizedComments, action) => {
-  const { type, payload, response, error } = action;
+const defaultState = fromJS({
+    loading: false,
+    isLoaded: false,
+    entities: fromArray(normalizedComments)
+})
 
-  switch (type) {
-      case ADD_COMMENT: return [...comments, payload];
-  }
-  return comments;
-};
+export default (comments = defaultState, action) => {
+    const { type, payload, randomId, response, error } = action
+
+    switch (type) {
+//        case ADD_COMMENT: return comments.concat({...payload.comment, id: randomId})
+    }
+
+    return comments
+}
