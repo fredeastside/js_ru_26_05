@@ -1,4 +1,4 @@
-import { DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, SUCCESS, START, LOAD_COMMENTS_FOR_ARTICLE } from '../constants'
+import { DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, SUCCESS, START, LOAD_COMMENTS_FOR_ARTICLE, LOAD_ARTICLE_BY_ID } from '../constants'
 import { normalizedArticles } from '../fixtures'
 import { fromArray } from '../store/utils'
 import { fromJS } from 'immutable'
@@ -28,6 +28,10 @@ export default (state = defaultState, action) => {
             ['entities', payload.articleId, 'comments'],
             state.getIn(['entities', payload.articleId, 'comments']).push(randomId)
           );
+        case LOAD_ARTICLE_BY_ID + START:
+          return state.setIn(['entities', payload, 'loading'], true)
+        case LOAD_ARTICLE_BY_ID + SUCCESS:
+          return state.setIn(['entities', payload, 'text'], response.text).setIn(['entities', payload, 'loading'], false)
 
 /*
         case DELETE_ARTICLE: return articles.filter((article) => article.id != payload.id)
