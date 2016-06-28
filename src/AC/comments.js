@@ -1,5 +1,4 @@
-import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE, START, SUCCESS } from '../constants'
-import $ from 'jquery'
+import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE } from '../constants'
 
 export function addComment(articleId, comment) {
     return {
@@ -12,20 +11,10 @@ export function addComment(articleId, comment) {
     }
 }
 
-export function loadCommentsForArticle(article) {
-    return (dispatch, getState) => {
-        dispatch({
-            type: LOAD_COMMENTS_FOR_ARTICLE + START,
-            payload: article
-        })
-
-        setTimeout(() => {
-            $.get(`/api/comment?article=${article.id}`)
-                .done(response => dispatch({
-                    type: LOAD_COMMENTS_FOR_ARTICLE + SUCCESS,
-                    response,
-                    payload: article
-                }))
-        }, 1000)
+export function loadCommentsForArticle(id) {
+    return {
+        type: LOAD_COMMENTS_FOR_ARTICLE,
+        payload: { id },
+        callAPI: `/api/comment?article=${id}`
     }
 }

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import {connect } from 'react-redux'
-import CommentList from './CommentList'
-import { deleteArticle, loadArticleById } from '../AC/articles'
+import CommentList from './../containers/CommentList'
+import { deleteArticle } from '../AC/articles'
 
 class Article extends Component {
 
@@ -13,11 +13,12 @@ class Article extends Component {
     }
 
 */
+
+/*
     componentWillReceiveProps({ isOpen, article : { id, text, loading } }) {
-        if (isOpen && !text && !loading) {
-          this.props.loadArticleById({ id });
-        }
+        if (isOpen && !text && !loading) loadArticleById({ id })
     }
+*/
 
     render() {
         const { article, openArticle } = this.props
@@ -25,8 +26,10 @@ class Article extends Component {
 
         return (
             <div>
-                <h3 onClick = {openArticle}>{article.title} <a href="#" onClick = {this.handleDeleteArticle}>delete article</a></h3>
-                <h6>Added {new Date(article.date).toDateString()}</h6>
+                <h3 onClick = {openArticle}>{article.get('title')}
+                    <a href="#" onClick = {this.handleDeleteArticle}>delete article</a>
+                </h3>
+                <h6>Added {new Date(article.get('date')).toDateString()}</h6>
                 {this.getBody()}
             </div>
         )
@@ -35,12 +38,12 @@ class Article extends Component {
     getBody() {
         const { article, isOpen } = this.props
         if (!isOpen) return null
-        const loader = article.loading ? <h3>Loading...</h3> : null
+        const loader = article.get('loading') ? <h3>Loading...</h3> : null
         return (
             <section>
                 {loader}
-                {article.text}
-                <CommentList article = { article } />
+                {article.get('text')}
+                <CommentList article = { article} />
             </section>
         )
     }
@@ -48,19 +51,15 @@ class Article extends Component {
     handleDeleteArticle = (ev) => {
         ev.preventDefault()
         ev.stopPropagation()
-        this.props.deleteArticle(this.props.article.id)
+        this.props.deleteArticle(this.props.article.get('id'))
     }
 }
 
 Article.propTypes = {
-    article: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        text: PropTypes.string,
-        id: PropTypes.string.isRequired
-    }),
+    article: PropTypes.object,
     isOpen: PropTypes.bool,
     openArticle: PropTypes.func,
     options: PropTypes.object
 }
 
-export default connect(null, { deleteArticle, loadArticleById })(Article)
+export default connect(null, { deleteArticle })(Article)

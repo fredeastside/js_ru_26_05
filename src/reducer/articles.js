@@ -1,12 +1,11 @@
-import { DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, SUCCESS, START, LOAD_COMMENTS_FOR_ARTICLE, LOAD_ARTICLE_BY_ID } from '../constants'
+import { DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, LOAD_COMMENTS_FOR_ARTICLE, SUCCESS, START } from '../constants'
 import { normalizedArticles } from '../fixtures'
 import { fromArray } from '../store/utils'
-import { fromJS } from 'immutable'
+import { fromJS, List, OrderedMap, Map } from 'immutable'
 
-const defaultState = fromJS({
-    loading: false,
-    isLoaded: false,
-    entities: {}
+const defaultState = Map({
+    entities: OrderedMap({}),
+    loading: false
 })
 
 export default (state = defaultState, action) => {
@@ -21,40 +20,19 @@ export default (state = defaultState, action) => {
                 .set('loaded', true)
                 .set('entities', fromJS(fromArray(response)) )
 //                .update('entities', entities => entities.merge(fromArray(response)))
+
+        case DELETE_ARTICLE: return state.deleteIn(['entities', payload.id])
+
+        case ADD_COMMENT: return state.updateIn(['entities', payload.articleId, 'comments'],
+            new List([]), comments => comments.push(randomId))
+
         case LOAD_COMMENTS_FOR_ARTICLE + START:
             return state.setIn(['entities', payload.id, 'loadingComments'], true)
-        case ADD_COMMENT:
-          return state.setIn(
-            ['entities', payload.articleId, 'comments'],
-            state.getIn(['entities', payload.articleId, 'comments']).push(randomId)
-          );
-        case LOAD_ARTICLE_BY_ID + START:
-          return state.setIn(['entities', payload, 'loading'], true)
-        case LOAD_ARTICLE_BY_ID + SUCCESS:
-          return state.setIn(['entities', payload, 'text'], response.text).setIn(['entities', payload, 'loading'], false)
 
-/*
-        case DELETE_ARTICLE: return articles.filter((article) => article.id != payload.id)
-<<<<<<< HEAD
-        case ADD_COMMENT:
-            //это лишнее, .map и так вернет новый массив
-          articles = [...articles];
-          articles.map((article) => {
-            if (article.id === payload.articleId) {
-                //а это плохо, вы мутируете article
-              article.comments.push(payload.id);
-            }
-          });
-          return articles;
-    }
+        case LOAD_COMMENTS_FOR_ARTICLE + SUCCESS:
+            return state.setIn(['entities', payload.id, 'loadingComments'], true)
+                .setIn(['entities', payload.id, 'loadedComments'], true)
 
-    return articles
-}
-=======
-        case ADD_COMMENT: return articles.map(article => article.id != payload.articleId ? article :
-            {...article, comments: (article.comments || []).concat(randomId)}
-        )
-*/
     }
 
     return state

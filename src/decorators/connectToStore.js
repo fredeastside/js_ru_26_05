@@ -40,6 +40,7 @@ export default (storeNames, getStateFromStores) => {
         }
 
         handleStoresChanged = () => {
+            console.log('---', 123, 'changing')
             this.setState(getStateFromStores(stores, this.props));
         }
 
