@@ -11,3 +11,4 @@ export const SUCCESS = '_SUCCESS'
 export const FAIL = '_FAIL'
 
 export const INCREMENT = 'INCREMENT'
+export const LOAD_ALL_COMMENTS = 'LOAD_ALL_COMMENTS'
