@@ -19,10 +19,10 @@ export function loadCommentsForArticle(id) {
     }
 }
 
-export function loadAllComments(page = 1, limit = 2) {
+export function loadAllComments(page, limit) {
   return {
     type: LOAD_ALL_COMMENTS,
-    payload: {  },
-    callAPI: `/api/comment`//?limit=5&offset=5
+    payload: { page, limit },
+    callAPI: `/api/comment`
   }
 }

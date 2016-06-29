@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import shortid from 'shortid';
 
 class Pagination extends Component {
 
@@ -29,7 +30,7 @@ class Pagination extends Component {
                     this.renderPaginationPage(l + 1, this.getPageClass(!!((l + 1) == current)))
                   );
               } else if (i - l !== 1) {
-                  rangeWithDots.push(<div key={ Date.now() }>...</div>);
+                  rangeWithDots.push(<div key={ shortid.generate() }>...</div>);
               }
           }
 
@@ -42,7 +43,7 @@ class Pagination extends Component {
 
   renderPaginationPage(number, classNameValue) {
     return (
-      <div onClick={ () => this.onClickHandler(number) } className={ classNameValue } key={ Date.now() }>
+      <div onClick={ () => this.onClickHandler(number) } className={ classNameValue } key={ shortid.generate() }>
           { number }
       </div>
     );

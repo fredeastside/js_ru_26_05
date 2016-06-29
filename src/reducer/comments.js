@@ -1,11 +1,15 @@
-import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE, SUCCESS, START, FAIL } from '../constants'
+import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE, LOAD_ALL_COMMENTS, SUCCESS, START, FAIL } from '../constants'
 import { normalizedComments } from '../fixtures'
 import { fromArray } from '../store/utils'
 import { fromJS, Map, OrderedMap } from 'immutable'
 
 const defaultState = Map({
     entities: OrderedMap({}),
-    loading: false
+    loading: false,
+    loadingAll: false,
+    page: 1,
+    total: 0,
+    limit: 5
 })
 
 export default (comments = defaultState, action) => {
@@ -17,6 +21,10 @@ export default (comments = defaultState, action) => {
 
         case LOAD_COMMENTS_FOR_ARTICLE + SUCCESS:
             return comments.update('entities', entities => entities.merge(fromJS(fromArray(response))))
+        case LOAD_ALL_COMMENTS + START:
+            return comments.set('loadingAll', true)
+        case LOAD_ALL_COMMENTS + SUCCESS:
+            return comments.set('loadingAll', false).set('total', response.total).set('entities', fromJS(fromArray(response.records)))
     }
 
     return comments
