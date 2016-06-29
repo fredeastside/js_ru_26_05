@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import { Link } from 'react-router';
 
 class Pagination extends Component {
 
@@ -26,40 +27,36 @@ class Pagination extends Component {
       for (let i of range) {
           if (l) {
               if (i - l === 2) {
-                  rangeWithDots.push(
-                    this.renderPaginationPage(l + 1, this.getPageClass(!!((l + 1) == current)))
-                  );
+                  rangeWithDots.push(this.renderPaginationPage(l + 1));
               } else if (i - l !== 1) {
                   rangeWithDots.push(<div key={ shortid.generate() }>...</div>);
               }
           }
 
-          rangeWithDots.push(this.renderPaginationPage(i, this.getPageClass(!!(i == current))));
+          rangeWithDots.push(this.renderPaginationPage(i));
           l = i;
       }
 
       return rangeWithDots;
   }
 
-  renderPaginationPage(number, classNameValue) {
+  renderPaginationPage(number) {
     return (
-      <div onClick={ () => this.onClickHandler(number) } className={ classNameValue } key={ shortid.generate() }>
-          { number }
-      </div>
+      <li key={ shortid.generate() }>
+          <Link to={`/comments/${number}`}>
+              { number }
+          </Link>
+      </li>
     );
-  }
-
-  getPageClass(isActive) {
-    return isActive ? "active" : "";
   }
 
   render() {
     if (this.props.totalPages <= 1) return null;
 
     return (
-      <div>
+      <ul>
         { this.renderPagination(this.props.currentPage, this.props.totalPages) }
-      </div>
+      </ul>
     );
   }
 
