@@ -7,9 +7,8 @@ const defaultState = Map({
     entities: OrderedMap({}),
     loading: false,
     loadingAll: false,
-    page: 1,
     total: 0,
-    limit: 5
+    limit: 4
 })
 
 export default (comments = defaultState, action) => {
@@ -24,7 +23,10 @@ export default (comments = defaultState, action) => {
         case LOAD_ALL_COMMENTS + START:
             return comments.set('loadingAll', true)
         case LOAD_ALL_COMMENTS + SUCCESS:
-            return comments.set('loadingAll', false).set('total', response.total).set('entities', fromJS(fromArray(response.records)))
+            return comments
+                    .set('loadingAll', false)
+                    .set('total', response.total)
+                    .set('entities', fromJS(fromArray(response.records)))
     }
 
     return comments

@@ -4,10 +4,6 @@ import { Link } from 'react-router';
 
 class Pagination extends Component {
 
-  onClickHandler(page) {
-    this.props.changePage(page);
-  }
-
   renderPagination(c, m) {
       var current = c,
           last = m,

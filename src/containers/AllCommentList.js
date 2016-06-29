@@ -7,7 +7,17 @@ import { loadAllComments } from '../AC/comments';
 class AllCommentList extends Component {
 
   componentDidMount() {
-    const page = this.props.comments.get('page');
+    const page = this.props.params.page;
+    this.loadComments(page);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.page != nextProps.params.page) {
+      this.loadComments(nextProps.params.page);
+    }
+  }
+
+  loadComments(page) {
     const limit = this.props.comments.get('limit');
     this.props.loadAllComments(page, limit);
   }
@@ -21,21 +31,16 @@ class AllCommentList extends Component {
 
     const items = comments.map(comment => <li key = {comment.get('id')}><Comment comment = {comment} /></li>);
     const total = this.props.comments.get('total'),
-          page = this.props.comments.get('page'),
+          page = this.props.params.page,
           limit = this.props.comments.get('limit'),
           totalPages = Math.ceil(total / limit);
 
     return (
       <div>
           <div>{ items }</div>
-          <Pagination changePage={ this.changePage } currentPage={ page } totalPages={ totalPages } />
+          <Pagination currentPage={ page } totalPages={ totalPages } />
       </div>
     );
-  }
-
-  changePage = (page) => {
-      const limit = this.props.comments.get('limit');
-      this.props.loadAllComments(page, limit);
   }
 }
 

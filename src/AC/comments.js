@@ -19,7 +19,7 @@ export function loadCommentsForArticle(id) {
     }
 }
 
-export function loadAllComments(page, limit) {
+export function loadAllComments(page = 1, limit) {
   return {
     type: LOAD_ALL_COMMENTS,
     payload: { page, limit },

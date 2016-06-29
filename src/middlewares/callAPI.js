@@ -10,7 +10,7 @@ export default store => next => action => {
 
     if (limit && page) {
       const offset = page * limit - limit;
-      callAPI = `${callAPI}?limit=${limit}&offset=${offset}`
+      callAPI = `${callAPI}?limit=${limit}&offset=${offset}`;
     }
 
     setTimeout(() => {
